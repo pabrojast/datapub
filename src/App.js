@@ -166,7 +166,22 @@ export class ResourceEditor extends React.Component {
       bq_table_name: removeHyphen(bqTableName),
       sample: data,
     };
+    
+    const fullDataDictionary = resource.schema?.fields || [];
 
+    if (ckanResourceCopy.schema && Array.isArray(ckanResourceCopy.schema.fields)) {
+      ckanResourceCopy.schema.fields = ckanResourceCopy.schema.fields.map(field => {
+        const originalField = fullDataDictionary.find(f => f.name === field.name);
+        if (originalField) {
+          return {
+            ...field,
+            title: originalField.title || field.title,
+            description: originalField.description || field.description
+          };
+        }
+        return field;
+      });
+    }
     //Check if the user is editing resource, call resource_update and redirect to the dataset page
     if (resourceId) {
       ckanResourceCopy = {
