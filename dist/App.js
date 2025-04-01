@@ -29,13 +29,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function(sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function(key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function(key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _asyncToGenerator(fn) { return function() { var self = this, args = arguments; return new Promise(function(resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -53,13 +53,13 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function() { })); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var ResourceEditor = /*#__PURE__*/function (_React$Component) {
+var ResourceEditor = /*#__PURE__*/function(_React$Component) {
   _inherits(ResourceEditor, _React$Component);
 
   var _super = _createSuper(ResourceEditor);
@@ -71,7 +71,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
 
-    _defineProperty(_assertThisInitialized(_this), "handleChangeMetadata", function (event) {
+    _defineProperty(_assertThisInitialized(_this), "handleChangeMetadata", function(event) {
       var target = event.target;
       var value = target.value;
       var name = target.name;
@@ -111,7 +111,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
               _context.next = 7;
               return client.action("package_show", {
                 id: _this.state.datasetId
-              });
+              }, true);
 
             case 7:
               datasetMetadata = _context.sent;
@@ -137,7 +137,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
       }, _callee);
     })));
 
-    _defineProperty(_assertThisInitialized(_this), "createResource", /*#__PURE__*/function () {
+    _defineProperty(_assertThisInitialized(_this), "createResource", /*#__PURE__*/function() {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(resource) {
         var client, config, organizationId, datasetId, resourceId, ckanResource, data, bqTableName, ckanResourceCopy;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
@@ -184,7 +184,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
 
               case 13:
                 _context2.next = 15;
-                return client.action("resource_create", ckanResourceCopy).then(function (response) {
+                return client.action("resource_create", ckanResourceCopy).then(function(response) {
                   _this.onChangeResourceId(response.result.id);
                 });
 
@@ -196,7 +196,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
         }, _callee2);
       }));
 
-      return function (_x) {
+      return function(_x) {
         return _ref2.apply(this, arguments);
       };
     }());
@@ -231,7 +231,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
       }, _callee3);
     })));
 
-    _defineProperty(_assertThisInitialized(_this), "handleUploadStatus", function (status) {
+    _defineProperty(_assertThisInitialized(_this), "handleUploadStatus", function(status) {
       var ui = _this.state.ui;
 
       var newUiState = _objectSpread(_objectSpread({}, ui), {}, {
@@ -245,7 +245,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onChangeResourceId", function (resourceId) {
+    _defineProperty(_assertThisInitialized(_this), "onChangeResourceId", function(resourceId) {
       _this.setState({
         resourceId: resourceId
       });
@@ -271,7 +271,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
 
   _createClass(ResourceEditor, [{
     key: "componentDidMount",
-    value: function () {
+    value: function() {
       var _componentDidMount = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
         var config, authToken, api, lfs, organizationId, datasetId, resourceId, client, resource, resourceSchema, resourceSample, resourceCopy, sampleCopy, property;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
@@ -368,8 +368,8 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
       var _this2 = this;
 
       var _this$state$ui = this.state.ui,
-          loading = _this$state$ui.loading,
-          success = _this$state$ui.success;
+        loading = _this$state$ui.loading,
+        success = _this$state$ui.success;
       return /*#__PURE__*/_react.default.createElement("div", {
         className: "App"
       }, /*#__PURE__*/_react.default.createElement("form", {

@@ -110,7 +110,7 @@ export class ResourceEditor extends React.Component {
     if (isResourceCreate) {
       const datasetMetadata = await client.action("package_show", {
         id: this.state.datasetId,
-      });
+      }, true);
       let result = datasetMetadata.result;
 
       if (result.state === "draft") {
@@ -257,7 +257,7 @@ ResourceEditor.defaultProps = {
   config: {
     authToken: "be270cae-1c77-4853-b8c1-30b6cf5e9878",
     api: "http://127.0.0.1:5000",
-    lfs: "http://localhost:9419", 
+    lfs: "http://localhost:9419",
     organizationId: "myorg",
     datasetId: "sample_1",
   },

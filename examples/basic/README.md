@@ -162,7 +162,7 @@ export class ResourceEditor extends React.Component {
     if (isResourceCreate) {
       const datasetMetadata = await client.action("package_show", {
         id: this.state.datasetId,
-      });
+      }, true);
       let result = datasetMetadata.result;
 
       if (result.state === "draft") {
