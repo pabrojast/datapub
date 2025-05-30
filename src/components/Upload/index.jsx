@@ -11,6 +11,7 @@ class Upload extends React.Component {
     this.state = {
       datasetId: props.datasetId,
       selectedFile: null,
+      selectedUrl: "",
       fileSize: 0,
       formattedSize: "0 KB",
       start: "",
@@ -20,6 +21,7 @@ class Upload extends React.Component {
       fileExists: false,
       loading: false,
       timeRemaining: 0,
+      uploadType: "", // "file" or "url"
     };
   }
 
@@ -41,14 +43,93 @@ class Upload extends React.Component {
 
     this.setState({
       selectedFile,
+      selectedUrl: "",
       loaded: 0,
       success: false,
       fileExists: false,
       error: false,
       formattedSize,
+      uploadType: "file",
     });
 
     await this.onClickHandler();
+  };
+
+  onChangeUrl = async (event) => {
+    const url = event.target.value.trim();
+    
+    if (!url) {
+      this.setState({
+        selectedUrl: "",
+        success: false,
+        error: false,
+        uploadType: "",
+      });
+      this.props.handleUploadStatus({
+        loading: false,
+        success: false,
+        error: false,
+      });
+      return;
+    }
+
+    this.setState({
+      selectedUrl: url,
+      selectedFile: null,
+      loading: true,
+      success: false,
+      error: false,
+      uploadType: "url",
+    });
+
+    this.props.handleUploadStatus({
+      loading: true,
+      success: false,
+      error: false,
+    });
+
+    try {
+      // Validate URL and get resource metadata
+      const resource = await data.open(url);
+      await resource.addSchema();
+      
+      const formattedSize = onFormatBytes(resource.size);
+      const hash = await resource.hash('sha256');
+      
+      this.setState({
+        formattedSize,
+        fileSize: resource.size,
+        loading: false,
+        success: true,
+        error: false,
+      });
+
+      this.props.handleUploadStatus({
+        loading: false,
+        success: true,
+        error: false,
+      });
+
+      this.props.metadataHandler(Object.assign(resource.descriptor, { 
+        hash,
+        url: url,
+        name: url.split('/').pop() || 'resource-from-url'
+      }));
+
+    } catch (error) {
+      console.error("URL processing failed:", error);
+      this.setState({
+        loading: false,
+        success: false,
+        error: true,
+      });
+
+      this.props.handleUploadStatus({
+        loading: false,
+        success: false,
+        error: true,
+      });
+    }
   };
 
   onUploadProgress = (progressEvent) => {
@@ -122,41 +203,53 @@ class Upload extends React.Component {
       error,
       timeRemaining,
       selectedFile,
+      selectedUrl,
       formattedSize,
+      uploadType,
+      loading,
     } = this.state;
+
     return (
       <div className="upload-area">
         <Choose
           onChangeHandler={this.onChangeHandler}
-          onChangeUrl={(event) => console.log("Get url:", event.target.value)}
+          onChangeUrl={this.onChangeUrl}
         />
         <div className="upload-area__info">
-          {selectedFile && (
+          {(selectedFile || selectedUrl) && (
             <>
               <ul className="upload-list">
                 <li className="list-item">
                   <div className="upload-list-item">
                     <div>
-                      <p className="upload-file-name">{selectedFile.name}</p>
+                      <p className="upload-file-name">
+                        {uploadType === "file" ? selectedFile.name : selectedUrl}
+                      </p>
                       <p className="upload-file-size">{formattedSize}</p>
                     </div>
                     <div>
-                      <ProgressBar
-                        progress={Math.round(this.state.loaded)}
-                        size={50}
-                        strokeWidth={5}
-                        circleOneStroke="#d9edfe"
-                        circleTwoStroke={"#7ea9e1"}
-                        timeRemaining={timeRemaining}
-                      />
+                      {uploadType === "file" && (
+                        <ProgressBar
+                          progress={Math.round(this.state.loaded)}
+                          size={50}
+                          strokeWidth={5}
+                          circleOneStroke="#d9edfe"
+                          circleTwoStroke={"#7ea9e1"}
+                          timeRemaining={timeRemaining}
+                        />
+                      )}
+                      {uploadType === "url" && loading && (
+                        <div className="url-loading">Processing URL...</div>
+                      )}
                     </div>
                   </div>
                 </li>
               </ul>
               <h2 className="upload-message">
-                {success && !fileExists && !error && "File uploaded successfully"}
+                {success && !fileExists && !error && 
+                  (uploadType === "file" ? "File uploaded successfully" : "URL processed successfully")}
                 {fileExists && "File uploaded successfully"}
-                {error && "Upload failed"}
+                {error && (uploadType === "file" ? "Upload failed" : "URL processing failed")}
               </h2>
             </>
           )}

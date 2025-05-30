@@ -152,20 +152,36 @@ export class ResourceEditor extends React.Component {
     let bqTableName = ckanResource.bq_table_name
       ? ckanResource.bq_table_name
       : uuidv4();
-    // create a copy from ckanResource to add package_id, name, url, sha256,size, lfs_prefix, url, url_type
-    // without this properties ckan-blob-storage doesn't work properly
+
+    // Handle URL vs file upload differently
+    const isUrlResource = resource.url && !resource.hash; // URL resources might not have hash from upload
+    
     let ckanResourceCopy = {
       ...ckanResource,
       package_id: this.state.datasetId,
       name: resource.name || resource.title,
-      sha256: resource.hash,
-      size: resource.size,
-      lfs_prefix: `${organizationId}/${datasetId}`,
-      url: resource.name,
-      url_type: "upload",
       bq_table_name: removeHyphen(bqTableName),
       sample: data,
     };
+
+    if (isUrlResource) {
+      // For URL resources
+      ckanResourceCopy = {
+        ...ckanResourceCopy,
+        url: resource.url,
+        url_type: "url",
+      };
+    } else {
+      // For file uploads
+      ckanResourceCopy = {
+        ...ckanResourceCopy,
+        sha256: resource.hash,
+        size: resource.size,
+        lfs_prefix: `${organizationId}/${datasetId}`,
+        url: resource.name,
+        url_type: "upload",
+      };
+    }
 
     //Check if the user is editing resource, call resource_update and redirect to the dataset page
     if (resourceId) {
@@ -177,6 +193,7 @@ export class ResourceEditor extends React.Component {
 
       return (window.location.href = `/dataset/${datasetId}`);
     }
+    
     await client
       .action("resource_create", ckanResourceCopy)
       .then((response) => {
