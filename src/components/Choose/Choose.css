@@ -18,3 +18,34 @@
     font-size: 1rem;
     font-weight: 300;
 }
+
+.upload-option-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.back-btn {
+    background: none;
+    border: none;
+    color: #4FA8FD;
+    cursor: pointer;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+    margin-right: 15px;
+}
+
+.back-btn:hover {
+    background-color: #f0f8ff;
+}
+
+.upload-option-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}

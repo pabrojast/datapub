@@ -144,10 +144,14 @@ export class ResourceEditor extends React.Component {
       resource
     );
 
-    //create a valid format from sample
-    let data = { ...ckanResource.sample };
-    //delete sample because is an invalid format
-    delete ckanResource.sample;
+    //create a valid format from sample (only for file uploads)
+    let data = {};
+    if (ckanResource.sample) {
+      data = { ...ckanResource.sample };
+      //delete sample because is an invalid format
+      delete ckanResource.sample;
+    }
+    
     //generate an unique id for bq_table_name property
     let bqTableName = ckanResource.bq_table_name
       ? ckanResource.bq_table_name
@@ -161,8 +165,12 @@ export class ResourceEditor extends React.Component {
       package_id: this.state.datasetId,
       name: resource.name || resource.title,
       bq_table_name: removeHyphen(bqTableName),
-      sample: data,
     };
+
+    // Only add sample for file uploads
+    if (!isUrlResource) {
+      ckanResourceCopy.sample = data;
+    }
 
     if (isUrlResource) {
       // For URL resources

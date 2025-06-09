@@ -28,7 +28,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build:ckan": "react-scripts build",
+    "build:ckan": "NODE_OPTIONS='--openssl-legacy-provider' react-scripts build",
     "build": "rm -rf dist && NODE_ENV=production babel src --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__",
     "dist": "rm -rf dist/ && mkdir dist && mkdir dist/css && NODE_ENV=production babel src/ -d dist/ --copy-files",
     "test": "react-scripts test",

@@ -78,5 +78,20 @@
     ["PPAM", "PowerPoint Open XML - Macro-Enabled Add-In", "application/vnd.ms-powerpoint.addin.macroEnabled.12", []],
     ["PPTM", "PowerPoint Open XML - Macro-Enabled", "application/vnd.ms-powerpoint.presentation.macroEnabled.12", []],
     ["POTM", "PowerPoint Open XML - Macro-Enabled Template", "application/vnd.ms-powerpoint.template.macroEnabled.12", []],
-    ["PPSM", "PowerPoint Open XML - Macro-Enabled Slide Show", "application/vnd.ms-powerpoint.slideshow.macroEnabled.12", []]
+    ["PPSM", "PowerPoint Open XML - Macro-Enabled Slide Show", "application/vnd.ms-powerpoint.slideshow.macroEnabled.12", []],
+    ["MP3", "MP3 Audio File", "audio/mpeg", ["audio/mp3"]],
+    ["MP4", "MP4 Video File", "video/mp4", []],
+    ["AVI", "AVI Video File", "video/x-msvideo", ["video/avi"]],
+    ["MOV", "QuickTime Movie", "video/quicktime", []],
+    ["WMV", "Windows Media Video", "video/x-ms-wmv", []],
+    ["FLV", "Flash Video", "video/x-flv", []],
+    ["MKV", "Matroska Video", "video/x-matroska", []],
+    ["WEBM", "WebM Video", "video/webm", []],
+    ["WAV", "WAV Audio File", "audio/wav", ["audio/wave"]],
+    ["FLAC", "FLAC Audio File", "audio/flac", []],
+    ["AAC", "AAC Audio File", "audio/aac", []],
+    ["OGG", "OGG Audio File", "audio/ogg", []],
+    ["M4A", "M4A Audio File", "audio/mp4", ["audio/m4a"]],
+    ["WMA", "Windows Media Audio", "audio/x-ms-wma", []],
+    ["WEBSITE", "Website", "text/html", ["web", "site", "webpage"]]
   ]

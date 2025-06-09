@@ -7,7 +7,7 @@ exports.default = exports.ResourceEditor = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
-var _ckanClient = require("ckanClient");
+var _ckanClient = require("ckan-client");
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
@@ -139,7 +139,7 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "createResource", /*#__PURE__*/function () {
       var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(resource) {
-        var client, config, organizationId, datasetId, resourceId, ckanResource, data, bqTableName, ckanResourceCopy;
+        var client, config, organizationId, datasetId, resourceId, ckanResource, data, bqTableName, isUrlResource, ckanResourceCopy;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -153,42 +153,56 @@ var ResourceEditor = /*#__PURE__*/function (_React$Component) {
 
                 delete ckanResource.sample; //generate an unique id for bq_table_name property
 
-                bqTableName = ckanResource.bq_table_name ? ckanResource.bq_table_name : (0, _uuid.v4)(); // create a copy from ckanResource to add package_id, name, url, sha256,size, lfs_prefix, url, url_type
-                // without this properties ckan-blob-storage doesn't work properly
+                bqTableName = ckanResource.bq_table_name ? ckanResource.bq_table_name : (0, _uuid.v4)(); // Handle URL vs file upload differently
+
+                isUrlResource = resource.url && !resource.hash; // URL resources might not have hash from upload
 
                 ckanResourceCopy = _objectSpread(_objectSpread({}, ckanResource), {}, {
                   package_id: _this.state.datasetId,
                   name: resource.name || resource.title,
-                  sha256: resource.hash,
-                  size: resource.size,
-                  lfs_prefix: "".concat(organizationId, "/").concat(datasetId),
-                  url: resource.name,
-                  url_type: "upload",
                   bq_table_name: (0, _utils.removeHyphen)(bqTableName),
                   sample: data
-                }); //Check if the user is editing resource, call resource_update and redirect to the dataset page
+                });
+
+                if (isUrlResource) {
+                  // For URL resources
+                  ckanResourceCopy = _objectSpread(_objectSpread({}, ckanResourceCopy), {}, {
+                    url: resource.url,
+                    url_type: "url"
+                  });
+                } else {
+                  // For file uploads
+                  ckanResourceCopy = _objectSpread(_objectSpread({}, ckanResourceCopy), {}, {
+                    sha256: resource.hash,
+                    size: resource.size,
+                    lfs_prefix: "".concat(organizationId, "/").concat(datasetId),
+                    url: resource.name,
+                    url_type: "upload"
+                  });
+                } //Check if the user is editing resource, call resource_update and redirect to the dataset page
+
 
                 if (!resourceId) {
-                  _context2.next = 13;
+                  _context2.next = 15;
                   break;
                 }
 
                 ckanResourceCopy = _objectSpread(_objectSpread({}, ckanResourceCopy), {}, {
                   id: resourceId
                 });
-                _context2.next = 12;
+                _context2.next = 14;
                 return client.action("resource_update", ckanResourceCopy);
 
-              case 12:
+              case 14:
                 return _context2.abrupt("return", window.location.href = "/dataset/".concat(datasetId));
 
-              case 13:
-                _context2.next = 15;
+              case 15:
+                _context2.next = 17;
                 return client.action("resource_create", ckanResourceCopy).then(function (response) {
                   _this.onChangeResourceId(response.result.id);
                 });
 
-              case 15:
+              case 17:
               case "end":
                 return _context2.stop();
             }

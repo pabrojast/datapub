@@ -3829,6 +3829,13 @@ axios@^0.19.2:
   dependencies:
     follow-redirects "1.5.10"
 
+axios@^0.21.1:
+  version "0.21.4"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
+  integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
+  dependencies:
+    follow-redirects "^1.14.0"
+
 axobject-query@^2.0.2:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-2.2.0.tgz#943d47e10c0b704aa42275e20edf3722648989be"
@@ -4886,11 +4893,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
 
-"ckan-client@git+https://github.com/datopian/ckan-client-js.git#v0.4.2":
+"ckan-client@git+https://github.com/datopian/ckan-client-js.git#v0.4.3":
   version "0.4.2"
-  resolved "git+https://github.com/datopian/ckan-client-js.git#f59a13b15b14cbbf0053201af0ccf15150a1b2ae"
+  resolved "git+https://github.com/datopian/ckan-client-js.git#f4d843c9e179e1cf4dfed95695984bf46e590314"
   dependencies:
-    axios "^0.19.2"
+    axios "^0.21.1"
     crypto-js "^4.0.0"
     frictionless-ckan-mapper-js "^1.0.0"
     frictionless.js "^0.13.3"
@@ -7132,6 +7139,11 @@ follow-redirects@^1.0.0:
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
   integrity sha512-aq6gF1BEKje4a9i9+5jimNFIpq4Q1WiwBToeRK5NvZBd/TRsmW8BsJfOEGkr76TbOyPVD3OVDN910EcUNtRYEA==
 
+follow-redirects@^1.14.0:
+  version "1.15.9"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.9.tgz#a604fa10e443bf98ca94228d9eebcc2e8a2c8ee1"
+  integrity sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==
+
 for-in@^0.1.3:
   version "0.1.8"
   resolved "https://registry.yarnpkg.com/for-in/-/for-in-0.1.8.tgz#d8773908e31256109952b1fdb9b3fa867d2775e1"
@@ -7235,6 +7247,25 @@ frictionless.js@^0.13.3:
   version "0.13.3"
   resolved "https://registry.yarnpkg.com/frictionless.js/-/frictionless.js-0.13.3.tgz#02a7d6884cfa41b352b29fe17e553b16bb334991"
   integrity sha512-9cG+XmzmxkD9rKgdEYQagprm8nnSVe6GWWQekzhbyn8aUljfGO+pOobPat0FnnYuhiWu/TZCpqSz90MfX10Quw==
+  dependencies:
+    chardet "1.3.0"
+    csv-parse "4.12.0"
+    csv-sniffer "0.1.1"
+    iconv-lite "0.6.2"
+    lodash "4.17.20"
+    mime-types "2.1.27"
+    node-fetch "2.6.1"
+    readable-web-to-node-stream "^2.0.0"
+    stream-to-array "2.3.0"
+    stream-to-string "1.2.0"
+    tableschema "1.12.3"
+    url-join "4.0.1"
+    xlsx "0.16.7"
+
+frictionless.js@^0.13.4:
+  version "0.13.4"
+  resolved "https://registry.yarnpkg.com/frictionless.js/-/frictionless.js-0.13.4.tgz#4570b788073bad928fc2166afaa693e333c42f62"
+  integrity sha512-hB2noLCOl0pQZjSopcjwg+IeGcIg2FAQDO5EdJ9IsYZuoj45rzgM9ZLVMacTXLtEnftfML21e8ERQl38F4KpqA==
   dependencies:
     chardet "1.3.0"
     csv-parse "4.12.0"

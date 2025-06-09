@@ -65,7 +65,7 @@ var Upload = /*#__PURE__*/function (_React$Component) {
 
     _defineProperty(_assertThisInitialized(_this), "onChangeHandler", /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(event) {
-        var _this$state, formattedSize, selectedFile, file, rowStream, hash;
+        var _this$state, formattedSize, selectedFile, file, hash;
 
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -74,7 +74,7 @@ var Upload = /*#__PURE__*/function (_React$Component) {
                 _this$state = _this.state, formattedSize = _this$state.formattedSize, selectedFile = _this$state.selectedFile;
 
                 if (!(event.target.files.length > 0)) {
-                  _context.next = 23;
+                  _context.next = 17;
                   break;
                 }
 
@@ -82,64 +82,169 @@ var Upload = /*#__PURE__*/function (_React$Component) {
                 file = data.open(selectedFile);
                 _context.prev = 4;
                 _context.next = 7;
-                return file.rows({
-                  size: 20,
-                  keyed: true
-                });
-
-              case 7:
-                rowStream = _context.sent;
-                _context.next = 10;
-                return (0, _streamToArray.default)(rowStream);
-
-              case 10:
-                file.descriptor.sample = _context.sent;
-                _context.next = 13;
                 return file.addSchema();
 
-              case 13:
-                _context.next = 18;
+              case 7:
+                _context.next = 12;
                 break;
 
-              case 15:
-                _context.prev = 15;
+              case 9:
+                _context.prev = 9;
                 _context.t0 = _context["catch"](4);
-                console.error(_context.t0);
+                console.warn(_context.t0);
 
-              case 18:
+              case 12:
                 formattedSize = (0, _utils.onFormatBytes)(file.size);
-                _context.next = 21;
-                return file.hashSha256();
+                _context.next = 15;
+                return file.hash('sha256');
 
-              case 21:
+              case 15:
                 hash = _context.sent;
 
                 _this.props.metadataHandler(Object.assign(file.descriptor, {
                   hash: hash
                 }));
 
-              case 23:
+              case 17:
                 _this.setState({
                   selectedFile: selectedFile,
+                  selectedUrl: "",
                   loaded: 0,
                   success: false,
                   fileExists: false,
                   error: false,
-                  formattedSize: formattedSize
+                  formattedSize: formattedSize,
+                  uploadType: "file"
                 });
 
-                _this.onClickHandler();
+                _context.next = 20;
+                return _this.onClickHandler();
 
-              case 25:
+              case 20:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[4, 15]]);
+        }, _callee, null, [[4, 9]]);
       }));
 
       return function (_x) {
         return _ref.apply(this, arguments);
+      };
+    }());
+
+    _defineProperty(_assertThisInitialized(_this), "onChangeUrl", /*#__PURE__*/function () {
+      var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(event) {
+        var url, resource, formattedSize, hash;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                url = event.target.value.trim();
+
+                if (url) {
+                  _context2.next = 5;
+                  break;
+                }
+
+                _this.setState({
+                  selectedUrl: "",
+                  success: false,
+                  error: false,
+                  uploadType: ""
+                });
+
+                _this.props.handleUploadStatus({
+                  loading: false,
+                  success: false,
+                  error: false
+                });
+
+                return _context2.abrupt("return");
+
+              case 5:
+                _this.setState({
+                  selectedUrl: url,
+                  selectedFile: null,
+                  loading: true,
+                  success: false,
+                  error: false,
+                  uploadType: "url"
+                });
+
+                _this.props.handleUploadStatus({
+                  loading: true,
+                  success: false,
+                  error: false
+                });
+
+                _context2.prev = 7;
+                _context2.next = 10;
+                return data.open(url);
+
+              case 10:
+                resource = _context2.sent;
+                _context2.next = 13;
+                return resource.addSchema();
+
+              case 13:
+                formattedSize = (0, _utils.onFormatBytes)(resource.size);
+                _context2.next = 16;
+                return resource.hash('sha256');
+
+              case 16:
+                hash = _context2.sent;
+
+                _this.setState({
+                  formattedSize: formattedSize,
+                  fileSize: resource.size,
+                  loading: false,
+                  success: true,
+                  error: false
+                });
+
+                _this.props.handleUploadStatus({
+                  loading: false,
+                  success: true,
+                  error: false
+                });
+
+                _this.props.metadataHandler(Object.assign(resource.descriptor, {
+                  hash: hash,
+                  url: url,
+                  name: url.split('/').pop() || 'resource-from-url'
+                }));
+
+                _context2.next = 27;
+                break;
+
+              case 22:
+                _context2.prev = 22;
+                _context2.t0 = _context2["catch"](7);
+                console.error("URL processing failed:", _context2.t0);
+
+                _this.setState({
+                  loading: false,
+                  success: false,
+                  error: true
+                });
+
+                _this.props.handleUploadStatus({
+                  loading: false,
+                  success: false,
+                  error: true
+                });
+
+              case 27:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, null, [[7, 22]]);
+      }));
+
+      return function (_x2) {
+        return _ref2.apply(this, arguments);
       };
     }());
 
@@ -163,11 +268,11 @@ var Upload = /*#__PURE__*/function (_React$Component) {
       });
     });
 
-    _defineProperty(_assertThisInitialized(_this), "onClickHandler", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
+    _defineProperty(_assertThisInitialized(_this), "onClickHandler", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
       var start, selectedFile, client, resource;
-      return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      return regeneratorRuntime.wrap(function _callee3$(_context3) {
         while (1) {
-          switch (_context2.prev = _context2.next) {
+          switch (_context3.prev = _context3.next) {
             case 0:
               start = new Date().getTime();
               selectedFile = _this.state.selectedFile;
@@ -189,17 +294,19 @@ var Upload = /*#__PURE__*/function (_React$Component) {
 
               client.pushBlob(resource, _this.onUploadProgress).then(function (response) {
                 _this.setState({
-                  success: response.success,
+                  success: true,
                   loading: false,
-                  fileExists: response.fileExists,
+                  fileExists: !response,
                   loaded: 100
                 });
 
                 _this.props.handleUploadStatus({
                   loading: false,
-                  success: response.success
+                  success: true
                 });
               }).catch(function (error) {
+                console.error("Upload failed with error: " + error);
+
                 _this.setState({
                   error: true,
                   loading: false
@@ -214,15 +321,16 @@ var Upload = /*#__PURE__*/function (_React$Component) {
 
             case 7:
             case "end":
-              return _context2.stop();
+              return _context3.stop();
           }
         }
-      }, _callee2);
+      }, _callee3);
     })));
 
     _this.state = {
       datasetId: props.datasetId,
       selectedFile: null,
+      selectedUrl: "",
       fileSize: 0,
       formattedSize: "0 KB",
       start: "",
@@ -231,7 +339,9 @@ var Upload = /*#__PURE__*/function (_React$Component) {
       error: false,
       fileExists: false,
       loading: false,
-      timeRemaining: 0
+      timeRemaining: 0,
+      uploadType: "" // "file" or "url"
+
     };
     return _this;
   }
@@ -245,17 +355,18 @@ var Upload = /*#__PURE__*/function (_React$Component) {
           error = _this$state2.error,
           timeRemaining = _this$state2.timeRemaining,
           selectedFile = _this$state2.selectedFile,
-          formattedSize = _this$state2.formattedSize;
+          selectedUrl = _this$state2.selectedUrl,
+          formattedSize = _this$state2.formattedSize,
+          uploadType = _this$state2.uploadType,
+          loading = _this$state2.loading;
       return /*#__PURE__*/_react.default.createElement("div", {
         className: "upload-area"
       }, /*#__PURE__*/_react.default.createElement(_Choose.default, {
         onChangeHandler: this.onChangeHandler,
-        onChangeUrl: function onChangeUrl(event) {
-          return console.log("Get url:", event.target.value);
-        }
+        onChangeUrl: this.onChangeUrl
       }), /*#__PURE__*/_react.default.createElement("div", {
         className: "upload-area__info"
-      }, selectedFile && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", {
+      }, (selectedFile || selectedUrl) && /*#__PURE__*/_react.default.createElement(_react.default.Fragment, null, /*#__PURE__*/_react.default.createElement("ul", {
         className: "upload-list"
       }, /*#__PURE__*/_react.default.createElement("li", {
         className: "list-item"
@@ -263,18 +374,20 @@ var Upload = /*#__PURE__*/function (_React$Component) {
         className: "upload-list-item"
       }, /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("p", {
         className: "upload-file-name"
-      }, selectedFile.name), /*#__PURE__*/_react.default.createElement("p", {
+      }, uploadType === "file" ? selectedFile.name : selectedUrl), /*#__PURE__*/_react.default.createElement("p", {
         className: "upload-file-size"
-      }, formattedSize)), /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement(_ProgressBar.default, {
+      }, formattedSize)), /*#__PURE__*/_react.default.createElement("div", null, uploadType === "file" && /*#__PURE__*/_react.default.createElement(_ProgressBar.default, {
         progress: Math.round(this.state.loaded),
         size: 50,
         strokeWidth: 5,
         circleOneStroke: "#d9edfe",
         circleTwoStroke: "#7ea9e1",
         timeRemaining: timeRemaining
-      }))))), /*#__PURE__*/_react.default.createElement("h2", {
+      }), uploadType === "url" && loading && /*#__PURE__*/_react.default.createElement("div", {
+        className: "url-loading"
+      }, "Processing URL..."))))), /*#__PURE__*/_react.default.createElement("h2", {
         className: "upload-message"
-      }, success && !fileExists && !error && "File uploaded successfully", fileExists && "File uploaded successfully", error && "Upload failed"))));
+      }, success && !fileExists && !error && (uploadType === "file" ? "File uploaded successfully" : "URL processed successfully"), fileExists && "File uploaded successfully", error && (uploadType === "file" ? "Upload failed" : "URL processing failed")))));
     }
   }]);
 
